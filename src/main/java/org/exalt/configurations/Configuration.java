@@ -15,8 +15,8 @@ import java.nio.file.Files;
  * outputFileName the second passed argument
  * windowSize the third passed argument
  * inputType filled based on the passed input
- * numberOfThreads by default it is configured
- * to be the available processors on the machine the code is running on
+ * numberOfThreads by default is set to the available processors
+ * on the machine that will run the app
  * this can be changed manually with {@link #setNumberOfThreads(int threadsNumber)}
  */
 public class Configuration {
@@ -32,7 +32,7 @@ public class Configuration {
         // extract input,output file names and window size
         inputFileName = args[0];
         outputFileName = args[1];
-        windowSize = Integer.valueOf(args[2]);
+        windowSize = Integer.parseInt(args[2]);
         // initiate thread numbers as the number of processors available for this machine
         numberOfThreads = Runtime.getRuntime().availableProcessors();
         try {
@@ -54,7 +54,7 @@ public class Configuration {
      *
      * @param args command line arguments
      */
-    private void validateArgs(String[] args) {
+    public void validateArgs(String[] args) {
         if (args.length != 3) {
             throw new ArgumentsLengthException(String.format("Invalid number of arguments, expected %d arguments but provided with %d", 3, args.length));
         }
@@ -66,7 +66,7 @@ public class Configuration {
         }
     }
 
-    private String extractInputContentType() throws IOException {
+    public String extractInputContentType() throws IOException {
         File inputFile = new File(inputFileName);
         if (!inputFile.exists()) {
             throw new FileNotFoundException(String.format(" %s (No such file)", inputFileName));
@@ -74,7 +74,7 @@ public class Configuration {
         return Files.probeContentType(inputFile.toPath());
     }
 
-    private void setInputType(String contentType) {
+    public void setInputType(String contentType) {
         if (contentType != null && contentType.contains("image")) {
             inputType = FileType.IMAGE_FILE;
         } else {
