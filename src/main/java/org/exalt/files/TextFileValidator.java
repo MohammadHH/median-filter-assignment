@@ -30,7 +30,7 @@ public class TextFileValidator {
 
         // number of elements per each line is set after parsing the first non empty line
         int numberOfElementsPerLine = -1;
-        try (Scanner scanner = new Scanner(file);) {
+        try (Scanner scanner = new Scanner(file)) {
             // parse the file line by line
             while (scanner.hasNextLine()) {
                 // get the line, trimming is necessary to check for empty lines

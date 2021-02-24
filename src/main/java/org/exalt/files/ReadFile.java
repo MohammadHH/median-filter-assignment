@@ -55,7 +55,7 @@ public class ReadFile {
                 //extract line entries
                 String[] entries = line.split(scanner.delimiter().pattern());
                 int k = i;// k is effectively final and can be used in lambda
-                // submit line parsing to task queue
+                // submit line parsing to task queue for concurrent parsing
                 executor.submit(() -> {
                     for (int j = 0; j < elementsPerLine; j++) {
                         channel[k][j] = Short.valueOf(entries[j]);
