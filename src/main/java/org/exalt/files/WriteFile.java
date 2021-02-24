@@ -20,6 +20,7 @@ public class WriteFile {
             writeTextFile(file, channels[0]);
         } else {
             // write image file
+            throw new UnsupportedOperationException("Image files aren't supported yet");
         }
     }
 
@@ -41,4 +42,6 @@ public class WriteFile {
             System.exit(1);
         }
     }
+
+
 }

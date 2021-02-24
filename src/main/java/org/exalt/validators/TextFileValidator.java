@@ -1,4 +1,4 @@
-package org.exalt.files;
+package org.exalt.validators;
 
 import org.exalt.exceptions.EntryFormatException;
 import org.exalt.exceptions.NonUniformEntriesLengthException;

@@ -2,7 +2,6 @@ package org.exalt.files;
 
 
 import org.exalt.configurations.Configuration;
-import org.exalt.configurations.FileType;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -22,24 +21,11 @@ public class ReadFile {
         this.configuration = configuration;
     }
 
-    public short[][][] readFile() {
-        // call appropriate read method based on the input fileType
-        if (configuration.getInputType().equals(FileType.TEXT_FILE)) {
-            return readTextFile(new File(configuration.getInputFileName()), new TextFileValidator());
-        } else {
-            // Image Type
-            return new short[][][]{};
-        }
-    }
-
     // returns a text file as an array with single 2D array (text file has one channel)
-    public short[][][] readTextFile(File file, TextFileValidator validator) {
-        // validate the given text file & get channel dimension
-        int[] textFileInfo = validator.validateTextFile(file);
-
+    public short[][][] readTextFile(File file, int[] dimensions) {
         // extract file dimensions
-        int lines = textFileInfo[0];
-        int elementsPerLine = textFileInfo[1];
+        int lines = dimensions[0];
+        int elementsPerLine = dimensions[1];
 
         short[][] channel = new short[lines][elementsPerLine];
 
@@ -77,5 +63,4 @@ public class ReadFile {
         readFile[0] = channel;
         return readFile;
     }
-
 }

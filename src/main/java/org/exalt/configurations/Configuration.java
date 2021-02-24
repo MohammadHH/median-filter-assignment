@@ -1,15 +1,12 @@
 package org.exalt.configurations;
 
-import org.exalt.exceptions.ArgumentFormatException;
-import org.exalt.exceptions.ArgumentsLengthException;
-
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.file.Files;
 
 /**
- * This class validates and extract passed command line arguments
+ * This class extract passed command line arguments
  * the class saves the following
  * inputFileName the first passed argument
  * outputFileName the second passed argument
@@ -27,8 +24,6 @@ public class Configuration {
     private int numberOfThreads;
 
     public Configuration(String[] args) {
-        // validate the passed arguments
-        validateArgs(args);
         // extract input,output file names and window size
         inputFileName = args[0];
         outputFileName = args[1];
@@ -43,26 +38,6 @@ public class Configuration {
         } catch (IOException e) {
             e.printStackTrace();
             System.exit(1);
-        }
-    }
-
-    /**
-     * Validate the given command line arguments,
-     * arguments length should be 3
-     * third argument is window size and should be a parsable integer
-     * should any condition fail, the program stops and throws a dedicated exception
-     *
-     * @param args command line arguments
-     */
-    public void validateArgs(String[] args) {
-        if (args.length != 3) {
-            throw new ArgumentsLengthException(String.format("Invalid number of arguments, expected %d arguments but provided with %d", 3, args.length));
-        }
-        try {
-            // try getting window size
-            Integer.parseInt(args[2]);
-        } catch (NumberFormatException ex) {
-            throw new ArgumentFormatException(String.format("Malformed window size \"%s\"", args[2]));
         }
     }
 
