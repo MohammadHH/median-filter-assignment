@@ -5,6 +5,7 @@ import org.exalt.configurations.Configuration;
 import org.exalt.configurations.FileType;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.PrintWriter;
 
@@ -15,17 +16,12 @@ public class WriteFile {
         this.configuration = configuration;
     }
 
-    public void writeFile(File file, short[][][] channels) {
+    public void writeFile(File file, short[][][] channels) throws IOException {
         if (configuration.getInputType().equals(FileType.TEXT_FILE)) {
             if (channels.length == 0) {
                 // empty file
-                try {
-                    file.createNewFile();
-                    return;
-                } catch (IOException e) {
-                    e.printStackTrace();
-                    System.exit(1);
-                }
+                file.createNewFile();
+                return;
             }
             writeTextFile(file, channels[0]);
         } else {
@@ -34,7 +30,7 @@ public class WriteFile {
         }
     }
 
-    public void writeTextFile(File file, short[][] channel) {
+    public void writeTextFile(File file, short[][] channel) throws FileNotFoundException {
         // number of rows in the channel
         int rows = channel.length;
         // number of columns in the channel
@@ -47,9 +43,6 @@ public class WriteFile {
                 }
                 printWriter.println();
             }
-        } catch (IOException e) {
-            e.printStackTrace();
-            System.exit(1);
         }
     }
 

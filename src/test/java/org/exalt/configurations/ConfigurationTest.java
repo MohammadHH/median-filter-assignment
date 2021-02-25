@@ -23,7 +23,7 @@ class ConfigurationTest {
     }
 
     @Test
-    void givenNonExistingFile() {
+    void givenNonExistingFileAnExceptionShouldBeThrown() {
         assertThrows(FileNotFoundException.class, () -> {
             configuration = new Configuration(nonExistingInput);
         });
