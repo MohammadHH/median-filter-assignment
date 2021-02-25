@@ -17,6 +17,16 @@ public class WriteFile {
 
     public void writeFile(File file, short[][][] channels) {
         if (configuration.getInputType().equals(FileType.TEXT_FILE)) {
+            if (channels.length == 0) {
+                // empty file
+                try {
+                    file.createNewFile();
+                    return;
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    System.exit(1);
+                }
+            }
             writeTextFile(file, channels[0]);
         } else {
             // write image file

@@ -19,29 +19,24 @@ import java.nio.file.Files;
 public class Configuration {
     private String inputFileName;
     private String outputFileName;
-    private int windowSize;
+    private WindowConfiguration windowConfiguration;
     private FileType inputType;
-    private int numberOfThreads;
+    private ThreadsConfiguration threadsConfiguration;
 
-    public Configuration(String[] args) {
+    public Configuration(String[] args) throws IOException {
         // extract input,output file names and window size
         inputFileName = args[0];
         outputFileName = args[1];
-        windowSize = Integer.parseInt(args[2]);
+        windowConfiguration = new WindowConfiguration(Integer.parseInt(args[2]));
         // initiate thread numbers as the number of processors available for this machine
-        numberOfThreads = Runtime.getRuntime().availableProcessors();
-        try {
-            // try extracting content type of file
-            String contentType = extractInputContentType();
-            // set input type based on the content type
-            setInputType(contentType);
-        } catch (IOException e) {
-            e.printStackTrace();
-            System.exit(1);
-        }
+        threadsConfiguration = new ThreadsConfiguration(Runtime.getRuntime().availableProcessors());
+        // try extracting content type of file
+        String contentType = extractInputContentType();
+        // set input type based on the content type
+        setInputType(contentType);
     }
 
-    public String extractInputContentType() throws IOException {
+    private String extractInputContentType() throws IOException {
         File inputFile = new File(inputFileName);
         if (!inputFile.exists()) {
             throw new FileNotFoundException(String.format(" %s (No such file)", inputFileName));
@@ -49,7 +44,7 @@ public class Configuration {
         return Files.probeContentType(inputFile.toPath());
     }
 
-    public void setInputType(String contentType) {
+    private void setInputType(String contentType) {
         if (contentType != null && contentType.contains("image")) {
             inputType = FileType.IMAGE_FILE;
         } else {
@@ -67,7 +62,7 @@ public class Configuration {
     }
 
     public int getWindowSize() {
-        return windowSize;
+        return windowConfiguration.getWindowSize();
     }
 
     public FileType getInputType() {
@@ -75,11 +70,12 @@ public class Configuration {
     }
 
     public int getNumberOfThreads() {
-        return numberOfThreads;
+        return threadsConfiguration.getNumberOfThreads();
     }
 
     public void setNumberOfThreads(int numberOfThreads) {
-        this.numberOfThreads = numberOfThreads;
+        this.threadsConfiguration.setNumberOfThreads(numberOfThreads);
+
     }
 
 }

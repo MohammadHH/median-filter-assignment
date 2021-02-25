@@ -1,8 +1,6 @@
 package org.exalt.files;
 
 
-import org.exalt.configurations.Configuration;
-
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Objects;
@@ -15,10 +13,10 @@ import java.util.concurrent.TimeUnit;
  * This read class reads an input file and extract its channels
  */
 public class ReadFile {
-    private Configuration configuration;
+    private int numberOfThreads;
 
-    public ReadFile(Configuration configuration) {
-        this.configuration = configuration;
+    public ReadFile(int numberOfThreads) {
+        this.numberOfThreads = numberOfThreads;
     }
 
     // returns a text file as an array with single 2D array (text file has one channel)
@@ -26,11 +24,14 @@ public class ReadFile {
         // extract file dimensions
         int lines = dimensions[0];
         int elementsPerLine = dimensions[1];
-
+        if (lines == 0) {
+            // empty file
+            return new short[][][]{};
+        }
         short[][] channel = new short[lines][elementsPerLine];
 
         // parse the file and fill the channel
-        ExecutorService executor = Executors.newFixedThreadPool(configuration.getNumberOfThreads());
+        ExecutorService executor = Executors.newFixedThreadPool(numberOfThreads);
         try (Scanner scanner = new Scanner(file);) {
             // for each line in the file
             for (int i = 0; i < lines; i++) {

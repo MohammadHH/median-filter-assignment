@@ -6,13 +6,13 @@ public interface WindowBoundaries {
      * return window starting and ending point
      * (i.e what neighboring entries will affect median calculation for the given entry position)
      *
-     * @param columns       number of columns in channel
      * @param rows          number of rows in channel
+     * @param columns       number of columns in channel
      * @param windowSize    the size of window
      * @param entryPosition {row,column} at which entry is located
      * @return int[]{int[]startPoint{row,column},int[]endPoint{row,column}}
      */
-    int[][] getBoundaries(int columns, int rows, int windowSize, int[] entryPosition);
+    int[][] getBoundaries(int rows, int columns, int windowSize, int[] entryPosition);
 
     /**
      * boundaries helper method

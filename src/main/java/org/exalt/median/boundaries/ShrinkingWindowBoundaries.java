@@ -3,7 +3,7 @@ package org.exalt.median.boundaries;
 // handle entries at edges by shrinking window size
 public class ShrinkingWindowBoundaries implements WindowBoundaries {
 
-    public int[][] getBoundaries(int columns, int rows, int windowSize, int[] entryPosition) {
+    public int[][] getBoundaries(int rows, int columns, int windowSize, int[] entryPosition) {
         // rows above entry that are available for the window
         int above = Math.min(entryPosition[0], windowSize);
         // rows below entry that are available for the window

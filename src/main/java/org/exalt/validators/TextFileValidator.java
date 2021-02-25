@@ -7,7 +7,6 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Objects;
 import java.util.Scanner;
-import java.util.logging.Logger;
 
 public class TextFileValidator {
 
@@ -22,7 +21,7 @@ public class TextFileValidator {
      * @param file text file to validate
      * @return int[]{numberOfRows,numberOfColumns}
      */
-    public int[] validateTextFile(File file) {
+    public int[] validateTextFile(File file) throws FileNotFoundException {
         // row,column,token is handy to show parsing error location
         int row = 0;
         int column = 0;
@@ -57,12 +56,6 @@ public class TextFileValidator {
                 column = 0;
                 row++;
             }
-        } catch (FileNotFoundException e) {
-            Logger.getLogger(this.getClass().getName()).severe(() -> {
-                e.printStackTrace();
-                return e.getMessage();
-            });
-            System.exit(1);
         } catch (NumberFormatException ex) {
             // an entry has been parsed
             throw new EntryFormatException(entry, row, column);

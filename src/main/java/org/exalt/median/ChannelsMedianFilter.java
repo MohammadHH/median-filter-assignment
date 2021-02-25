@@ -1,7 +1,7 @@
 package org.exalt.median;
 
 
-import org.exalt.configurations.Configuration;
+import org.exalt.median.boundaries.ShrinkingWindowBoundaries;
 import org.exalt.median.boundaries.WindowBoundaries;
 import org.exalt.median.selection.Median;
 import org.exalt.median.selection.QuickMedianSelection;
@@ -13,14 +13,17 @@ import java.util.concurrent.TimeUnit;
 // Get median from given 2D channels
 public class ChannelsMedianFilter {
     private Median medianStrategy;
-    private Configuration configuration;
     private WindowBoundaries utility;
+    private int windowSize;
+    private int numberOfThreads;
 
-    public ChannelsMedianFilter(Configuration configuration, WindowBoundaries utility) {
+    public ChannelsMedianFilter(int windowSize, int numberOfThreads) {
         // use quick selection strategy by default
         this.medianStrategy = new QuickMedianSelection();
-        this.configuration = configuration;
-        this.utility = utility;
+        // use shrinking boundaries strategy by default
+        this.utility = new ShrinkingWindowBoundaries();
+        this.windowSize = windowSize;
+        this.numberOfThreads = numberOfThreads;
     }
 
     public Median getMedianStrategy() {
@@ -29,6 +32,14 @@ public class ChannelsMedianFilter {
 
     public void setMedianStrategy(Median medianStrategy) {
         this.medianStrategy = medianStrategy;
+    }
+
+    public WindowBoundaries getWindowBoundaryStrategy() {
+        return utility;
+    }
+
+    public void setWindowBoundaryStrategy(WindowBoundaries utility) {
+        this.utility = utility;
     }
 
     // return median filter for given channels
@@ -47,7 +58,7 @@ public class ChannelsMedianFilter {
         int columns = channel[0].length;
         short[][] medianChannel = new short[rows][columns];
         // initialize fixed threads pool
-        ExecutorService executor = Executors.newFixedThreadPool(configuration.getNumberOfThreads());
+        ExecutorService executor = Executors.newFixedThreadPool(numberOfThreads);
         // loop over each row in the channel
         for (int i = 0; i < rows; i++) {
             int k = i;//k is effectively final and can be used in lambda
@@ -60,7 +71,7 @@ public class ChannelsMedianFilter {
                     int[] start;
                     int[] end;
                     // get start and end point for the sliding window
-                    boundaries = utility.getBoundaries(columns, rows, configuration.getWindowSize(), new int[]{k, j});
+                    boundaries = utility.getBoundaries(rows, columns, windowSize, new int[]{k, j});
                     start = boundaries[0];
                     end = boundaries[1];
                     // convert sliding window into array and find its median

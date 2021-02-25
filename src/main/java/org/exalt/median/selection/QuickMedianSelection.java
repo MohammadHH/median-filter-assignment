@@ -1,9 +1,13 @@
 package org.exalt.median.selection;
 
+import org.exalt.exceptions.EmptyArrayException;
+
 // median selection based on quick sort
 public class QuickMedianSelection implements Median {
     @Override
     public short median(short[] array) {
+        if (array.length == 0) throw new EmptyArrayException("Can't get median from empty array");
+
         if (array.length == 1) return array[0];
         // get middle element
         short median = quickSelect(array, 0, array.length - 1, (array.length - 1) / 2);
@@ -20,7 +24,7 @@ public class QuickMedianSelection implements Median {
     }
 
     // select the kth smallest element from an array
-    public short quickSelect(short[] array, int left, int right, int kth) {
+    private short quickSelect(short[] array, int left, int right, int kth) {
         // elements that comes before pivot index are guaranteed to be less than the element at that index
         int pivotIndex = partition(array, left, right);
         // if pivotIndex changes to be k then element at kth is the smallest kth element
@@ -32,7 +36,7 @@ public class QuickMedianSelection implements Median {
 
     // reorder the array such that all element that are less than the right one comes before it
     // change the right element index to come immediate after the elements that are less than it
-    public int partition(short[] array, int left, int right) {
+    private int partition(short[] array, int left, int right) {
         int partitionIndex = left;
         int pivot = array[right];
         // go from left to right of the array
