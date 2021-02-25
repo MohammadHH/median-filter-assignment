@@ -9,5 +9,5 @@ public interface Median {
      * @param array array to apply median on
      * @return the median element
      **/
-    short median(short[] array);
+    short getMedianElementFromGivenArray(short[] array);
 }

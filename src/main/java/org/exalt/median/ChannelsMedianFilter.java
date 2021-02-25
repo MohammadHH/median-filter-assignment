@@ -13,7 +13,7 @@ import java.util.concurrent.TimeUnit;
 // Get median from given 2D channels
 public class ChannelsMedianFilter {
     private Median medianStrategy;
-    private WindowBoundaries utility;
+    private WindowBoundaries windowBoundaries;
     private int windowSize;
     private int numberOfThreads;
 
@@ -21,29 +21,25 @@ public class ChannelsMedianFilter {
         // use quick selection strategy by default
         this.medianStrategy = new QuickMedianSelection();
         // use shrinking boundaries strategy by default
-        this.utility = new ShrinkingWindowBoundaries();
+        this.windowBoundaries = new ShrinkingWindowBoundaries();
         this.windowSize = windowSize;
         this.numberOfThreads = numberOfThreads;
     }
 
-    public Median getMedianStrategy() {
-        return medianStrategy;
-    }
-
+    // can use it to modify the default median strategy
     public void setMedianStrategy(Median medianStrategy) {
         this.medianStrategy = medianStrategy;
     }
 
-    public WindowBoundaries getWindowBoundaryStrategy() {
-        return utility;
-    }
-
+    // can use it to modify the default boundary calculation strategy
     public void setWindowBoundaryStrategy(WindowBoundaries utility) {
-        this.utility = utility;
+        this.windowBoundaries = utility;
     }
 
     // return median filter for given channels
-    public short[][][] medianFilter(short[][][] channels) {
+    // a channel is a 2D array
+    // text files has one channel, RGB images has 3 channels
+    public short[][][] applyMedianFilterOnChannels(short[][][] channels) throws InterruptedException {
         short[][][] filteredChannels = new short[channels.length][][];
         // loop through channels
         for (int i = 0; i < channels.length; i++) {
@@ -53,7 +49,7 @@ public class ChannelsMedianFilter {
     }
 
     // return median filter for given 2D channel
-    public short[][] getChannelMedian(short[][] channel) {
+    public short[][] getChannelMedian(short[][] channel) throws InterruptedException {
         int rows = channel.length;
         int columns = channel[0].length;
         short[][] medianChannel = new short[rows][columns];
@@ -71,24 +67,19 @@ public class ChannelsMedianFilter {
                     int[] start;
                     int[] end;
                     // get start and end point for the sliding window
-                    boundaries = utility.getBoundaries(rows, columns, windowSize, new int[]{k, j});
+                    boundaries = windowBoundaries.getWindowBoundaries(rows, columns, windowSize, new int[]{k, j});
                     start = boundaries[0];
                     end = boundaries[1];
                     // convert sliding window into array and find its median
                     // store the result in the median channel
-                    medianChannel[k][j] = medianStrategy.median(utility.getArrayFromMatrix(start, end, channel));
+                    medianChannel[k][j] = medianStrategy.getMedianElementFromGivenArray(windowBoundaries.getArrayFromMatrix(start, end, channel));
                 }
             });
         }
         // no further tasks
         executor.shutdown();
-        try {
-            // wait for tasks to complete
-            executor.awaitTermination(Long.MAX_VALUE, TimeUnit.MILLISECONDS);
-        } catch (InterruptedException exception) {
-            exception.printStackTrace();
-            Thread.currentThread().interrupt();
-        }
+        // wait for tasks to complete
+        executor.awaitTermination(Long.MAX_VALUE, TimeUnit.MILLISECONDS);
         return medianChannel;
     }
 }

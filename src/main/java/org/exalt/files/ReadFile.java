@@ -10,7 +10,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
 /**
- * This read class reads an input file and extract its channels
+ * This class reads an input file and extract its channels
  */
 public class ReadFile {
     private int numberOfThreads;
@@ -32,7 +32,7 @@ public class ReadFile {
 
         // parse the file and fill the channel
         ExecutorService executor = Executors.newFixedThreadPool(numberOfThreads);
-        try (Scanner scanner = new Scanner(file);) {
+        try (Scanner scanner = new Scanner(file)) {
             // for each line in the file
             for (int i = 0; i < lines; i++) {
                 // get the line
@@ -45,7 +45,7 @@ public class ReadFile {
                 // submit line parsing to task queue for concurrent parsing
                 executor.submit(() -> {
                     for (int j = 0; j < elementsPerLine; j++) {
-                        channel[k][j] = Short.valueOf(entries[j]);
+                        channel[k][j] = Short.parseShort(entries[j]);
                     }
                 });
             }

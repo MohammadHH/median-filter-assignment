@@ -47,9 +47,10 @@ public class Configuration {
     private void setInputType(String contentType) {
         if (contentType != null && contentType.contains("image")) {
             inputType = FileType.IMAGE_FILE;
-        } else {
-            // if content type is not an image, consider it a text
+        } else if (contentType == null || contentType.contains("text")) {
             inputType = FileType.TEXT_FILE;
+        } else {
+            throw new UnsupportedOperationException(contentType + " types are not supported");
         }
     }
 
@@ -73,6 +74,7 @@ public class Configuration {
         return threadsConfiguration.getNumberOfThreads();
     }
 
+    // in case one want to modify number of threads to number other than default
     public void setNumberOfThreads(int numberOfThreads) {
         this.threadsConfiguration.setNumberOfThreads(numberOfThreads);
 

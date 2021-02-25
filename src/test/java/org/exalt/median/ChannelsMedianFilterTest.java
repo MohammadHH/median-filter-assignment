@@ -25,7 +25,7 @@ class ChannelsMedianFilterTest {
     }
 
     @Test
-    void testRightMedianEntriesWhenPerformingMedianFilterOverAChannel() {
+    void testRightMedianEntriesWhenPerformingMedianFilterOverAChannel() throws InterruptedException {
         short[][] median = new short[][]{
                 {64, 80, 81, 114, 138, 152, 156, 161},
                 {64, 72, 80, 106, 130, 137, 156, 156},

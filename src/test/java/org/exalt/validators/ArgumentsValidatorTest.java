@@ -29,32 +29,32 @@ class ArgumentsValidatorTest {
     @Test
     void givenEmptyStringThrowArgumentsLengthException() {
         String[] empty = arguments.get("empty");
-        assertThrows(ArgumentsLengthException.class, () -> validator.validateArgs(empty));
+        assertThrows(ArgumentsLengthException.class, () -> validator.validateGivenArguments(empty));
     }
 
     @Test
     void givenTwoArgsThrowArgumentsLengthException() {
         String[] twoArgs = arguments.get("lessThanThree");
-        assertThrows(ArgumentsLengthException.class, () -> validator.validateArgs(twoArgs));
+        assertThrows(ArgumentsLengthException.class, () -> validator.validateGivenArguments(twoArgs));
 
     }
 
     @Test
     void givenFourArgsThrowArgumentsLengthException() {
         String[] fourArgs = arguments.get("moreThanThree");
-        assertThrows(ArgumentsLengthException.class, () -> validator.validateArgs(fourArgs));
+        assertThrows(ArgumentsLengthException.class, () -> validator.validateGivenArguments(fourArgs));
     }
 
     @Test
     void givenNonParsableIntegerThrowArgumentsFormatException() {
         String[] nonParsable = arguments.get("nonParsableInteger");
-        assertThrows(ArgumentFormatException.class, () -> validator.validateArgs(nonParsable));
+        assertThrows(ArgumentFormatException.class, () -> validator.validateGivenArguments(nonParsable));
     }
 
     @Test
     void givenValidArgsNoExceptionIsThrown() {
         String[] valid = arguments.get("valid");
-        assertDoesNotThrow(() -> validator.validateArgs(valid));
+        assertDoesNotThrow(() -> validator.validateGivenArguments(valid));
     }
 
 }

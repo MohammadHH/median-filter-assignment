@@ -1,5 +1,6 @@
 package org.exalt.validators;
 
+import org.exalt.exceptions.EntryBoundException;
 import org.exalt.exceptions.EntryFormatException;
 import org.exalt.exceptions.NonUniformEntriesLengthException;
 
@@ -42,7 +43,11 @@ public class TextFileValidator {
                 // parse line entries
                 for (int i = 0; i < entries.length; i++) {
                     entry = entries[i];
-                    Short.parseShort(entry);
+                    short parsedEntry = Short.parseShort(entry);
+                    if (parsedEntry < 0 || parsedEntry > 255) {
+                        throw new EntryBoundException(file.getName(), entry, row, column);
+
+                    }
                     column++;
                 }
                 // is this the first non empty line
@@ -50,15 +55,15 @@ public class TextFileValidator {
                     numberOfElementsPerLine = column;
                 } else if (numberOfElementsPerLine != column) {
                     // entries length on a subsequent non empty line is not the same as the rest
-                    throw new NonUniformEntriesLengthException(row, numberOfElementsPerLine, column);
+                    throw new NonUniformEntriesLengthException(file.getName(), row, numberOfElementsPerLine, column);
                 }
                 // return column at 0 for the next line and advance row
                 column = 0;
                 row++;
             }
         } catch (NumberFormatException ex) {
-            // an entry has been parsed
-            throw new EntryFormatException(entry, row, column);
+            // an entry has been wrongly parsed
+            throw new EntryFormatException(file.getName(), entry, row, column);
         }
         // return the text file 2D channel size
         return new int[]{row, numberOfElementsPerLine};

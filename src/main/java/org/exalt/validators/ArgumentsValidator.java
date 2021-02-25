@@ -12,7 +12,7 @@ public class ArgumentsValidator {
      *
      * @param args command line arguments
      */
-    public void validateArgs(String[] args) {
+    public void validateGivenArguments(String[] args) {
         if (args.length != 3) {
             throw new ArgumentsLengthException(String.format("Invalid number of arguments, expected %d arguments but provided with %d", 3, args.length));
         }

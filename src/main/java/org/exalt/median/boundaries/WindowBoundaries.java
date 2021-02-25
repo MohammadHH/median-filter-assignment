@@ -12,7 +12,7 @@ public interface WindowBoundaries {
      * @param entryPosition {row,column} at which entry is located
      * @return int[]{int[]startPoint{row,column},int[]endPoint{row,column}}
      */
-    int[][] getBoundaries(int rows, int columns, int windowSize, int[] entryPosition);
+    int[][] getWindowBoundaries(int rows, int columns, int windowSize, int[] entryPosition);
 
     /**
      * boundaries helper method
@@ -21,7 +21,7 @@ public interface WindowBoundaries {
      *
      * @param start   start point int[]{row,column}
      * @param end     end point  int[]{row,column}
-     * @param channel the channel to get the matrix from
+     * @param channel the 2D channel to get the matrix from
      * @return newly created array from the given parameters
      */
     short[] getArrayFromMatrix(int[] start, int[] end, short[][] channel);

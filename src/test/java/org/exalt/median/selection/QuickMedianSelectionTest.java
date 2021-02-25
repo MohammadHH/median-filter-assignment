@@ -44,33 +44,33 @@ class QuickMedianSelectionTest {
     @Test
     void givenEmptyArrayMedianShouldFail() {
         short[] empty = arraysToTest.get("empty").array;
-        assertThrows(EmptyArrayException.class, () -> selection.median(empty));
+        assertThrows(EmptyArrayException.class, () -> selection.getMedianElementFromGivenArray(empty));
 
     }
 
     @Test
     void givenOneElementArrayMedianIsThatElement() {
         MedianArray oneElement = arraysToTest.get("oneElement");
-        assertEquals(oneElement.median, selection.median(oneElement.array));
+        assertEquals(oneElement.median, selection.getMedianElementFromGivenArray(oneElement.array));
     }
 
     @Test
     void givenSortedArrayMedianIsTheMiddle() {
         MedianArray sorted = arraysToTest.get("sorted");
-        assertEquals(sorted.median, selection.median(sorted.array));
+        assertEquals(sorted.median, selection.getMedianElementFromGivenArray(sorted.array));
     }
 
     @Test
     void givenRepeatedElementsArrayMedianShouldBeCalculatedCorrectly() {
         MedianArray repeated = arraysToTest.get("repeatedElements");
-        assertEquals(repeated.median, selection.median(repeated.array));
+        assertEquals(repeated.median, selection.getMedianElementFromGivenArray(repeated.array));
     }
 
     @Test
     void givenEvenArrayMedianIsAvgOfMiddles() {
         MedianArray even = arraysToTest.get("evenElements");
         Arrays.sort(even.array);
-        assertEquals(even.median, selection.median(even.array));
+        assertEquals(even.median, selection.getMedianElementFromGivenArray(even.array));
     }
 
 }

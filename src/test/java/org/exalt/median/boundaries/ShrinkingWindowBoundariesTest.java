@@ -38,32 +38,32 @@ class ShrinkingWindowBoundariesTest {
         Assertions.assertAll(() -> {
             // test top left edge
             assertArrayEquals(new int[][]{{0, 0}, {2, 2}},
-                    shrinkingWindow.getBoundaries(7, 8, 2, new int[]{0, 0}));
+                    shrinkingWindow.getWindowBoundaries(7, 8, 2, new int[]{0, 0}));
         }, () -> {
             // test top right edge
             assertArrayEquals(new int[][]{{0, 5}, {2, 7}},
-                    shrinkingWindow.getBoundaries(7, 8, 2, new int[]{0, 7}));
+                    shrinkingWindow.getWindowBoundaries(7, 8, 2, new int[]{0, 7}));
         }, () -> {
             // test bottom left edge
             assertArrayEquals(new int[][]{{4, 0}, {6, 2}},
-                    shrinkingWindow.getBoundaries(7, 8, 2, new int[]{6, 0}));
+                    shrinkingWindow.getWindowBoundaries(7, 8, 2, new int[]{6, 0}));
         }, () -> {
             // test bottom right edge
             assertArrayEquals(new int[][]{{4, 5}, {6, 7}},
-                    shrinkingWindow.getBoundaries(7, 8, 2, new int[]{6, 7}));
+                    shrinkingWindow.getWindowBoundaries(7, 8, 2, new int[]{6, 7}));
         });
     }
 
     @Test
     void givenLargeWindowSizeWindowShouldShrinkToMaximumAvailableSize() {
         assertArrayEquals(new int[][]{{0, 0}, {6, 7}},
-                shrinkingWindow.getBoundaries(7, 8, 15, new int[]{3, 4}));
+                shrinkingWindow.getWindowBoundaries(7, 8, 15, new int[]{3, 4}));
     }
 
     @Test
     void testRightBoundariesGivenSomePosition() {
         assertArrayEquals(new int[][]{{1, 2}, {5, 6}},
-                shrinkingWindow.getBoundaries(7, 8, 2, new int[]{3, 4}));
+                shrinkingWindow.getWindowBoundaries(7, 8, 2, new int[]{3, 4}));
     }
 
     @Test
